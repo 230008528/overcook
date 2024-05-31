@@ -8,6 +8,7 @@ public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button achievement;
 
         private void Awake()
     {
@@ -20,6 +21,7 @@ public class MainMenuUI : MonoBehaviour
         {
             Application.Quit();
         });
+        achievement.onClick.AddListener(() => { SceneManager.LoadScene("Achievement"); });
 
         Time.timeScale = 1f;
     }
