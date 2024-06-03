@@ -12,9 +12,9 @@ public class settingPrefab : MonoBehaviour
 {
     public AudioMixer audioMixer;
     [SerializeField ] Dropdown resolutionDropdown;
-    public Dropdown qualityDropdown;
-    public Dropdown textureDropdown;
-    public Dropdown aaDropdown;
+  //  public Dropdown qualityDropdown;
+    //public Dropdown textureDropdown;
+  //  public Dropdown aaDropdown;
     public Slider volumeSlider;
     float currentVolume;
     Resolution[] resolutions;
@@ -25,16 +25,16 @@ public class settingPrefab : MonoBehaviour
         currentVolume = volume;
 
     }
-    public void SetFullscreen(bool fullscreen)
+    public void SetFullscreen(bool isFullscreen)
     {
-        Screen.fullScreen= fullscreen;
+        Screen.fullScreen= isFullscreen;
     }
     public void SetResoulution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen); ;
     }
-    public void SetTextureQuality(int textureIndex)
+  /*  public void SetTextureQuality(int textureIndex)
     {
         QualitySettings.globalTextureMipmapLimit = textureIndex;
         qualityDropdown.value = 6;
@@ -77,18 +77,18 @@ public class settingPrefab : MonoBehaviour
 
             }
         qualityDropdown.value = qualityIndex;
-    }
+    }*/
     public void SaveSettings()
     {
-        PlayerPrefs.SetInt("QualitySettingPreference", qualityDropdown.value);
-        PlayerPrefs.SetInt("ResolutionPreference", textureDropdown.value);
-        PlayerPrefs.SetInt("AntiAliasingPreference", aaDropdown.value);
+        //PlayerPrefs.SetInt("QualitySettingPreference", qualityDropdown.value);
+      //  PlayerPrefs.SetInt("ResolutionPreference", textureDropdown.value);
+      //  PlayerPrefs.SetInt("AntiAliasingPreference", aaDropdown.value);
         PlayerPrefs.SetInt("FullscreenPreference",Convert.ToInt32(Screen.fullScreen));
         PlayerPrefs.SetFloat("VolumePreference", currentVolume);
     }
     public void LoadSettings(int currentResolutionIntdex)
     {
-        if (PlayerPrefs.HasKey("QualitySettingPreference"))
+        /*if (PlayerPrefs.HasKey("QualitySettingPreference"))
             qualityDropdown.value =
                          PlayerPrefs.GetInt("QualitySettingPreference");
         else
@@ -107,7 +107,7 @@ public class settingPrefab : MonoBehaviour
             aaDropdown.value =
                          PlayerPrefs.GetInt("AntiAliasingPreference");
         else
-            aaDropdown.value = 1;
+            aaDropdown.value = 1;*/
         if (PlayerPrefs.HasKey("FullscreenPreference"))
             Screen.fullScreen =
             Convert.ToBoolean(PlayerPrefs.GetInt("FullscreenPreference"));
