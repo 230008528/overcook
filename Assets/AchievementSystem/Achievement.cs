@@ -4,26 +4,32 @@ using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class AchievementData
+
+public class Achievement : MonoBehaviour
 {
-    public string name;
-    public int id;
-}
-public class Achievement : PopupField<AchievementData>
-{
+    private string name;
+    private int achievementID;
+   
+    void Start()
+    {
+            PlayerPrefs.SetString("Achievement",name);
+            PlayerPrefs.SetInt("AchievementStats",0);
+            PlayerPrefs.SetInt("AchievementID", achievementID);
+    }
     public Achievement()
     {
-        formatSelectedValueCallback=FormatItem;
-        formatListItemCallback = FormatItem;
-        choices = new List<AchievementData>{
-            new AchievementData { name = "Overcook!", id = 1 },
-            new AchievementData { name = "......", id = 2 },
-            new AchievementData { name = "Waiter...help..", id = 3 },
-        };
-
+        this.name=name;
+        this.achievementID= achievementID;
     }
-    static string FormatItem(AchievementData data)
+    public void SetAchievementName(string newName)
     {
-        return data.name;
+        this.name=newName;
     }
+    public void SetAchievementID(int newID)
+    {
+        this.achievementID=newID;
+    }
+    public string AchievementName => PlayerPrefs.GetString("Achievement");
+    public int AchievementStats=>PlayerPrefs.GetInt("AchievementStats");
+    public int AchievementID=>PlayerPrefs.GetInt("AchievementID");
 }
