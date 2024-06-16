@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using Malee;
 using Malee.List;
+using static AchevementDatabase;
 
 [CreateAssetMenu()]
 public class AchevementDatabase : ScriptableObject
 {
-    [Malee.List.Reorderable]
-    public List<Achevement> achevements;
+    [Reorderable(sortable =false, paginate =false)]
+    public AchevementsArray achevements;
+
     [System.Serializable]
-    public class AchevementsArray : ReorderableArray<Achevement> { }
+    public class AchevementsArray : ReorderableArray<Achevement> {
+        
+    }
 }

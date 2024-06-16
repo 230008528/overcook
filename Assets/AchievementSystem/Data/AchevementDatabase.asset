@@ -12,4 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bad3c1a4f5e93148b911a39e83a4996, type: 3}
   m_Name: AchevementDatabase
   m_EditorClassIdentifier: 
-  achevements: []
+  achevements:
+    array:
+    - id: 
+      title: 
+      description: 
+    - id: 
+      title: 
+      description: 
+    - id: 
+      title: 
+      description: 
+    - id: 
+      title: 
+      description: 
