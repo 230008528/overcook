@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OptionsUI : MonoBehaviour
 {
@@ -57,5 +58,8 @@ public class OptionsUI : MonoBehaviour
     public void Hide(){
         gameObject.SetActive(false);
     }
-
+    public void BackToMenul()
+    {
+        SceneManager.LoadScene("MainMenuScene");
+    }
 }

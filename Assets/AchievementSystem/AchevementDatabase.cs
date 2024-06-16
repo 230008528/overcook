@@ -6,7 +6,7 @@ using Malee;
 [CreateAssetMenu()]
 public class AchevementDatabase : ScriptableObject
 {
-    [Reorderable]
+    [Malee.List.Reorderable]
     public List<Achevement> achevements;
     [System.Serializable]
     public class AchevementsArray<Achevement> { }
