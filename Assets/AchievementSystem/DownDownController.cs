@@ -23,7 +23,9 @@ public class DownDownController : MonoBehaviour
     public Action<Achevements>onValueChanged;
     private void Start()
     {
+      UpdateOptions();
       Dropdown.onValueChanged.AddListener(HandleDropdownValueChanged);
+     
     }
     [ContextMenu("UpdateOptions()")]
     public void UpdateOptions()

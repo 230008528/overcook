@@ -42,6 +42,8 @@ public class AchievementManager : MonoBehaviour
         {
             GameObject obj=Instantiate(achievementItemPrefab,content );
             AchievementItemControler controller =obj.GetComponent<AchievementItemControler>();
+            bool unlocked=PlayerPrefs.GetInt(achevement.id,0)==1;
+            controller.unlocked=unlocked;
             controller.achievement=achevement;
             controller.RefreshView();
             achievementItems.Add(controller);
@@ -60,5 +62,17 @@ public class AchievementManager : MonoBehaviour
         PlayerPrefs.SetInt(item.achievement.id,1);
         item.unlocked =true;
         item.RefreshView();
+    }
+    public void LockAllAchievements()
+    {
+        foreach(Achevement achevement in database.achevements)
+        {
+            PlayerPrefs.DeleteKey(achevement.id);
+        }
+        foreach(AchievementItemControler controller in achievementItems)
+        {
+            controller.unlocked=false;
+            controller.RefreshView();
+        }
     }
 }
