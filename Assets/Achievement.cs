@@ -1,1 +1,1 @@
-public enum Achevements{achT01,achG02,}
+public enum Achevements{achT01,achG02,achG03,}
