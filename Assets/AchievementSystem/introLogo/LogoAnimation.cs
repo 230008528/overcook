@@ -10,14 +10,14 @@ public class LogoAnimation : MonoBehaviour
     [SerializeField] Animator logoG;
     [SerializeField] Animator logoGNum;
     private float delay = 0.2f;
-    private float timer = 0f;
+   
     private bool played=false;
     private bool played2 = false;
     // Start is called before the first frame update
     void Start()
     {
         played = false;
-        timer = 0f;
+        
     }
 
     // Update is called once per frame
