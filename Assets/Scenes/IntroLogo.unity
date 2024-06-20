@@ -327,8 +327,9 @@ GameObject:
   m_Component:
   - component: {fileID: 893874562}
   - component: {fileID: 893874563}
+  - component: {fileID: 893874564}
   m_Layer: 0
-  m_Name: LogoAnimationManager
+  m_Name: LogoManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,6 +367,18 @@ MonoBehaviour:
   logoNum2: {fileID: 832666492}
   logoG: {fileID: 1668171466}
   logoGNum: {fileID: 1951181450}
+--- !u!114 &893874564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893874561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e94df519893a845856fafd0c5d3141, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1187903659
 GameObject:
   m_ObjectHideFlags: 0
