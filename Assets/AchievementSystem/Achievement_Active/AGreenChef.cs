@@ -9,6 +9,7 @@ public class AGreenChef : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        achievementManager.UnlockAchievement(Achevements.achT01);
+        achievementManager.UnlockAchievement(Achevements.achT01/*Achievement id*/);
+        // call achievementManager to Unlock the Achievement
     }
 }
