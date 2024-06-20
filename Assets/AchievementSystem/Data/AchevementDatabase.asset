@@ -15,8 +15,8 @@ MonoBehaviour:
   achevements:
     array:
     - id: achT01
-      title: The Green
-      description: 
+      title: A Green Chef
+      description: Complete the teaching phase
     - id: achG02
       title: Over Cooked
       description: 
