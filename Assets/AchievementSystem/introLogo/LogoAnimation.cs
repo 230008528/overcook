@@ -9,6 +9,7 @@ public class LogoAnimation : MonoBehaviour
     [SerializeField] Animator logoNum2;
     [SerializeField] Animator logoG;
     [SerializeField] Animator logoGNum;
+    [SerializeField] Animator manager;
     private float delay = 0.2f;
    
     private bool played=false;
@@ -27,14 +28,14 @@ public class LogoAnimation : MonoBehaviour
         played = true;
         if (played == true)
         {
-
+            manager.Play("AutoToMainMenu");
             LogoAnimaWaitAmoment();
 
 
             logoNum2.Play("LogoNum2_Animation");
             played2 = true;
-            if (played2 == true) { logoG.SetBool("goBaicePlayed", true); }
-            logoG.Play("LogoG_Animation");
+            if (played2 == true) { logoG.SetBool("LogoBaicePlayed", true); }
+            //logoG.Play("LogoG_Animation");
             logoTailAnimator.SetBool("LogoBaicePlayed", true);
             logoGNum.Play("LogoG2B5_Animation");
         }
