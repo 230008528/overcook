@@ -10,7 +10,7 @@ public class Player2 : MonoBehaviour, IKitchenObjectParent
 
     public static Player2 Instance { get; private set; }
 
-    private PlayerInput playerInput;
+    private PlayerInput playerInput;//get input system
 
     public event EventHandler OnPickUpSomething;
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
@@ -37,8 +37,8 @@ public class Player2 : MonoBehaviour, IKitchenObjectParent
             Debug.LogError("There is more than one Player instance");
         }
         Instance = this;
-        playerInput = new PlayerInput();
-        playerInput.Player2.Enable();
+        playerInput = new PlayerInput();//get input system
+        playerInput.Player2.Enable();//get input map
     }
     private void Start()
     {
@@ -47,7 +47,7 @@ public class Player2 : MonoBehaviour, IKitchenObjectParent
     }
     public Vector2 GetMovementVectorNormalized()
     {
-        Vector2 inputVector = playerInput.Player2.Move.ReadValue<Vector2>();
+        Vector2 inputVector = playerInput.Player2/*input map*/.Move.ReadValue<Vector2>();//input system control
 
         inputVector = inputVector.normalized;
         return inputVector;

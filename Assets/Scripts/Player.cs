@@ -8,7 +8,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
 	
 	public static Player Instance{ get; private set ;}
 
-    private PlayerInput playerInput;
+    private PlayerInput playerInput;//get input system
 
 
     public event EventHandler OnPickUpSomething;
@@ -34,8 +34,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
         }
 		Instance = this;
 
-        playerInput = new PlayerInput();
-        playerInput.Player.Enable();
+        playerInput = new PlayerInput();//get input system
+        playerInput.Player.Enable();//get input map
     }
 	private void Start(){
 		gameInput.OnInteractAction += GameInput_OnInteractAction;
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
 	}
     public Vector2 GetMovementVectorNormalized()
     {
-        Vector2 inputVector = playerInput.Player.Move.ReadValue<Vector2>();
+        Vector2 inputVector = playerInput.Player/*input map*/.Move.ReadValue<Vector2>();//input system control
 
         inputVector = inputVector.normalized;
         return inputVector;
