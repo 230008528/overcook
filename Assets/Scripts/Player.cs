@@ -8,9 +8,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
 	
 	public static Player Instance{ get; private set ;}
 
+    private PlayerInput playerInput;
 
 
-	public event EventHandler OnPickUpSomething;
+    public event EventHandler OnPickUpSomething;
 	public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
 	public class OnSelectedCounterChangedEventArgs : EventArgs{
         public BaseCounter selectedCounter;
@@ -32,13 +33,23 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
             Debug.LogError("There is more than one Player instance");
         }
 		Instance = this;
-	}
+
+        playerInput = new PlayerInput();
+        playerInput.Player.Enable();
+    }
 	private void Start(){
 		gameInput.OnInteractAction += GameInput_OnInteractAction;
 		gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
 	}
-	
-	private void GameInput_OnInteractAlternateAction(object sender, EventArgs e){
+    public Vector2 GetMovementVectorNormalized()
+    {
+        Vector2 inputVector = playerInput.Player.Move.ReadValue<Vector2>();
+
+        inputVector = inputVector.normalized;
+        return inputVector;
+    }
+
+    private void GameInput_OnInteractAlternateAction(object sender, EventArgs e){
 		if (!KitchenGameManager.Instance.IsGamePlaying()) return;
 
         if (selectedCounter != null){
@@ -95,11 +106,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
 
 
 		private void HandleMovement(){
-		   
-    
-			Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-       
-			Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+
+			Vector2 inputVector = GetMovementVectorNormalized();
+
+            Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
         
 			float moveDistance = moveSpeed * Time.deltaTime;  
 			float playerRadius = .7f;

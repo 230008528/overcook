@@ -45,4 +45,14 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent{
     public bool HasKitchenObject(){
         return kitchenObject != null;
     }
+
+    internal void InteractAlternate(Player2 player2)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void Interact(Player2 player2)
+    {
+        throw new NotImplementedException();
+    }
 }
