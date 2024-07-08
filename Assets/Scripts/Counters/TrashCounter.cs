@@ -17,5 +17,17 @@ public class TrashCounter : BaseCounter{
 
             OnAnyObjectTrashed?.Invoke(this, EventArgs.Empty);
         }
+       
+    }
+    public override void Interact2( Player2 player2)
+    {
+
+      
+        if (player2.HasKitchenObject())
+        {
+            player2.GetKitchenObject().DestroySelf();
+
+            OnAnyObjectTrashed?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

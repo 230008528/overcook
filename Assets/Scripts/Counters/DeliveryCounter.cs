@@ -25,5 +25,20 @@ public class DeliveryCounter : BaseCounter{
                 player.GetKitchenObject().DestroySelf();
             }
         }
+        
+    }
+    public override void Interact2( Player2 player2)
+    {
+
+        
+        if (player2.HasKitchenObject())
+        {
+
+            if (player2.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+            {
+                DeliveryManager.Instance.DeliverRecipe(plateKitchenObject);
+                player2.GetKitchenObject().DestroySelf();
+            }
+        }
     }
 }

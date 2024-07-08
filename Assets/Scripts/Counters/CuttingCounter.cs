@@ -56,8 +56,61 @@ public class CuttingCounter : BaseCounter, IHasProgress{
                     GetKitchenObject().SetKitchenObjectParent(player);
                     }
             }
+        
+    }
+    public override void Interact2( Player2 player2)
+    {
+        
+        if (!HasKitchenObject())
+        {
+            // 柜子上没有物品
+            if (player2.HasKitchenObject())
+            {
+                // 角色有物品，放置物品
+                if (HasRecipeWithInput(player2.GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    player2.GetKitchenObject().SetKitchenObjectParent(this);
+                    cuttingProgress = 0;
+
+                    CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
+                        progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
+                    });
+                }
+            }
+            else
+            {
+                // 角色没有物品
+            }
         }
-        public override void InteractAlternate(Player player){
+        else
+        {
+            // 柜子上有物品
+            if (player2.HasKitchenObject())
+            {
+                // 角色有物品
+                if (player2.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    // 角色拿的是盘子
+                    // PlateKitchenObject plateKitchenObject = player.GetKitchenObject() as PlateKitchenObject;
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObject().DestroySelf();
+                    }
+
+                }
+
+            }
+            else
+            {
+                // 角色没有物品，拾取物品
+                GetKitchenObject().SetKitchenObjectParent(player2);
+            }
+        }
+    }
+    public override void InteractAlternate(Player player){
             if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO())){
                 // 柜子上有物品，开始切菜
                 cuttingProgress++;
@@ -80,8 +133,35 @@ public class CuttingCounter : BaseCounter, IHasProgress{
                 }               
             }
         }
+    public override void InteractAlternate2(Player2 player2)
+    {
+        if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
+        {
+            // 柜子上有物品，开始切菜
+            cuttingProgress++;
 
-       private bool HasRecipeWithInput(KitchenObjectSO inputKitchenObjectSO){
+            OnCut?.Invoke(this, EventArgs.Empty);
+            OnAnyCut?.Invoke(this, EventArgs.Empty);
+
+            CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            {
+                progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
+            });
+
+            if (cuttingProgress >= GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO()).cuttingProgressMax)
+            {
+                KitchenObjectSO cutKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+
+                GetKitchenObject().DestroySelf();
+
+                KitchenObject.SpawnKitchenObject(cutKitchenObjectSO, this);
+            }
+        }
+    }
+
+    private bool HasRecipeWithInput(KitchenObjectSO inputKitchenObjectSO){
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObjectSO);
             return cuttingRecipeSO != null;
         }

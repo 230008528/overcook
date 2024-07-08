@@ -41,5 +41,55 @@ public class ClearCounter : BaseCounter {
                     GetKitchenObject().SetKitchenObjectParent(player);
                 }
         }
-     }  
+        
+
+    }
+    public override void Interact2(Player2 player2)
+    {
+        if (!HasKitchenObject())
+        {
+
+            if (player2.HasKitchenObject())
+            {
+
+                player2.GetKitchenObject().SetKitchenObjectParent(this);
+}
+            else
+{
+
+}
+        }
+        else
+{
+    if (player2.HasKitchenObject())
+    {
+
+        if (player2.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+        {
+            // 角色拿的是盘子
+            // PlateKitchenObject plateKitchenObject = player.GetKitchenObject() as PlateKitchenObject;
+            if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+            {
+                GetKitchenObject().DestroySelf();
+            }
+        }
+        else
+        {
+            // 角色拿的不是盘子，而是别的东西
+            if (GetKitchenObject().TryGetPlate(out plateKitchenObject))
+            {
+                if (plateKitchenObject.TryAddIngredient(player2.GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    player2.GetKitchenObject().DestroySelf();
+                }
+            }
+        }
+    }
+    else
+    {
+        GetKitchenObject().SetKitchenObjectParent(player2);
+    }
+}
+
+}
 }

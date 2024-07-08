@@ -45,10 +45,28 @@ public class PlatesCounter : BaseCounter{
                 OnPlateRemoved?.Invoke(this, EventArgs.Empty);
             }
         }
+        
     }
+    public override void Interact2( Player2 player2)
+    {
 
+        if (!player2.HasKitchenObject())
+        {
 
-}   
+            // 角色手上没有东西
+            if (platesSpawnedAmount > 0)
+            {
+
+                // 盘子存放台上有盘子
+                platesSpawnedAmount--;
+
+                KitchenObject.SpawnKitchenObject(plateKitchenObjectSO, player2);
+
+                OnPlateRemoved?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }  
+    }
 
                     
 

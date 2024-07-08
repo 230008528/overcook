@@ -3014,7 +3014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee479f87c33fc6545bf9bc97c5c4560a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1144668861}
+  player: {fileID: 1914321562}
 --- !u!1 &1144668858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3024,7 +3024,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1144668862}
-  - component: {fileID: 1144668861}
   - component: {fileID: 1144668860}
   - component: {fileID: 1144668859}
   m_Layer: 0
@@ -3064,24 +3063,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e7e0008db355c1448c494281565763c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1144668861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144668858}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8350583a47d91449b96525aaa2d63a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 8
-  gameInput: {fileID: 2053807910}
-  countersLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  kitchenObjectHoldPoint: {fileID: 1532640646}
 --- !u!4 &1144668862
 Transform:
   m_ObjectHideFlags: 0

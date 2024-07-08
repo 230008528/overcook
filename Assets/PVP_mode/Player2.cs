@@ -1,221 +1,222 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player2 : MonoBehaviour, IKitchenObjectParent
 {
 
 
-    public static Player2 Instance { get; private set; }
+	public static Player2 Instance { get; private set; }
+	
 
-    private PlayerInput playerInput;//get input system
-
-    public event EventHandler OnPickUpSomething;
-    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
-    public class OnSelectedCounterChangedEventArgs : EventArgs
-    {
-        public BaseCounter selectedCounter;
-    }
-
-    [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private GameInput gameInput;
-    [SerializeField] private LayerMask countersLayerMask;
-    [SerializeField] private Transform kitchenObjectHoldPoint;
+	private PlayerInputActions playerInput;//get input system
 
 
-    private bool isWalking;
-    private Vector3 lastInteractDir;
-    private BaseCounter selectedCounter;
-    private KitchenObject kitchenObject;
+	public event EventHandler OnPickUpSomething;
+	public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+	public class OnSelectedCounterChangedEventArgs : EventArgs
+	{
+		public BaseCounter selectedCounter;
+	}
 
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Debug.LogError("There is more than one Player instance");
-        }
-        Instance = this;
-        playerInput = new PlayerInput();//get input system
-        playerInput.Player2.Enable();//get input map
-    }
-    private void Start()
-    {
-        gameInput.OnInteractAction += GameInput_OnInteractAction;
-        gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
-    }
-    public Vector2 GetMovementVectorNormalized()
-    {
-        Vector2 inputVector = playerInput.Player2/*input map*/.Move.ReadValue<Vector2>();//input system control
-
-        inputVector = inputVector.normalized;
-        return inputVector;
-    }
-    private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
-    {
-        if (!KitchenGameManager.Instance.IsGamePlaying()) return;
-
-        if (selectedCounter != null)
-        {
-            selectedCounter.InteractAlternate(player2:this);
-        }
-    }
-
-    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
-    {
-        if (!KitchenGameManager.Instance.IsGamePlaying()) return;
-
-        if (selectedCounter != null)
-        {
-            selectedCounter.Interact(player2: this);
-        }
-    }
+	[SerializeField] private float moveSpeed = 7f;
+	[SerializeField] private GameInput gameInput;
+	[SerializeField] private LayerMask countersLayerMask;
+	[SerializeField] private Transform kitchenObjectHoldPoint;
 
 
-    private void Update()
-    {
-        HandleMovement();
-        HandleInteractions();
-    }
+	private bool isWalking;
+	private Vector3 lastInteractDir;
+	private BaseCounter selectedCounter;
+	private KitchenObject kitchenObject;
 
-    public bool IsWalking()
-    {
-        return isWalking;
-    }
+	private void Awake()
+	{
+		if (Instance != null)
+		{
+			Debug.LogError("There is more than one Player instance");
+		}
+		Instance = this;
 
-    private void HandleInteractions()
-    {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+		playerInput = new PlayerInputActions();//get input system
+		playerInput.Player2.Enable();//get input map
+	}
+	private void Start()
+	{
+		gameInput.OnInteractAction += GameInput_OnInteractAction;
+		gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
+	}
+	public Vector2 GetMovementVectorNormalized()
+	{
+		Vector2 inputVector = playerInput.Player2/*input map*/.Move.ReadValue<Vector2>();//input system control
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+		inputVector = inputVector.normalized;
+		return inputVector;
+	}
+
+	private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
+	{
+		if (!KitchenGameManager.Instance.IsGamePlaying()) return;
+
+		if (selectedCounter != null)
+		{
+			selectedCounter.InteractAlternate2(this);
+		}
+	}
+
+	private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+	{
+		if (!KitchenGameManager.Instance.IsGamePlaying()) return;
+
+		if (selectedCounter != null)
+		{
+			selectedCounter.Interact2(this);
+		}
+	}
 
 
+	private void Update()
+	{
+		HandleMovement();
+		HandleInteractions();
+	}
 
-        if (moveDir != Vector3.zero)
-        {
-            lastInteractDir = moveDir;
-        }
+	public bool IsWalking()
+	{
+		return isWalking;
+	}
 
-        float interactDistance = 2f;
-        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
-            {
+	private void HandleInteractions()
+	{
+		Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
-                if (baseCounter != selectedCounter)
-                {
-                    SetSelectedCounter(baseCounter);
-                }
-            }
-            else
-            {
-                SetSelectedCounter(null);
-            }
-        }
-        else
-        {
-            SetSelectedCounter(null);
-        }
-
-        Debug.Log(selectedCounter);
-    }
+		Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
 
 
-    private void HandleMovement()
-    {
+		if (moveDir != Vector3.zero)
+		{
+			lastInteractDir = moveDir;
+		}
+
+		float interactDistance = 2f;
+		if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
+		{
+			if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
+			{
+
+				if (baseCounter != selectedCounter)
+				{
+					SetSelectedCounter(baseCounter);
+				}
+			}
+			else
+			{
+				SetSelectedCounter(null);
+			}
+		}
+		else
+		{
+			SetSelectedCounter(null);
+		}
+
+		Debug.Log(selectedCounter);
+	}
 
 
-        Vector2 inputVector = GetMovementVectorNormalized();
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+	private void HandleMovement()
+	{
 
-        float moveDistance = moveSpeed * Time.deltaTime;
-        float playerRadius = .7f;
-        float playerHeight = 2f;
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 
-        if (!canMove)
-        {
-            //当不能向moveDir方向移动时
+		Vector2 inputVector = GetMovementVectorNormalized();
 
-            // 尝试沿x轴移动
-            Vector3 moveDirX = new Vector3(moveDir.x, 0f, 0f).normalized; // 归一化让速度和直接左右移动相同
-                                                                          //canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
-            canMove = (moveDir.x < -0.5f || moveDir.x > 0.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
+		Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
-            if (canMove)
-            {
-                // 可以沿x轴移动
-                moveDir = moveDirX;
-            }
-            else
-            {
-                // 不能向x轴方向移动，尝试向z轴方向移动
-                Vector3 moveDirZ = new Vector3(0f, 0f, moveDir.z).normalized; // 归一化让速度和直接左右移动相同
-                                                                              //canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
-                canMove = (moveDir.z < -0.5f || moveDir.z > 0.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
+		float moveDistance = moveSpeed * Time.deltaTime;
+		float playerRadius = .7f;
+		float playerHeight = 2f;
+		bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 
-                if (canMove)
-                {
-                    // 可以向z轴方向移动
-                    moveDir = moveDirZ;
-                }
-                else
-                {
-                    // 不能朝任何方向移动
-                }
-            }
-        }
+		if (!canMove)
+		{
+			//当不能向moveDir方向移动时
 
-        if (canMove)
-        {
-            transform.position += moveDir * Time.deltaTime * moveSpeed;
-        }
-        isWalking = (inputVector != Vector2.zero);
-        float rotateSpeed = 10f;
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
-    }
+			// 尝试沿x轴移动
+			Vector3 moveDirX = new Vector3(moveDir.x, 0f, 0f).normalized; // 归一化让速度和直接左右移动相同
+																		  //canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
+			canMove = (moveDir.x < -0.5f || moveDir.x > 0.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
 
-    private void SetSelectedCounter(BaseCounter selectedCounter)
-    {
-        this.selectedCounter = selectedCounter;
+			if (canMove)
+			{
+				// 可以沿x轴移动
+				moveDir = moveDirX;
+			}
+			else
+			{
+				// 不能向x轴方向移动，尝试向z轴方向移动
+				Vector3 moveDirZ = new Vector3(0f, 0f, moveDir.z).normalized; // 归一化让速度和直接左右移动相同
+																			  //canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
+				canMove = (moveDir.z < -0.5f || moveDir.z > 0.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
 
-        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
-        {
-            selectedCounter = selectedCounter
-        });
-    }
-    public Transform GetKitchenObjectFollowTransform()
-    {
-        return kitchenObjectHoldPoint;
-    }
+				if (canMove)
+				{
+					// 可以向z轴方向移动
+					moveDir = moveDirZ;
+				}
+				else
+				{
+					// 不能朝任何方向移动
+				}
+			}
+		}
 
-    public void SetKitchenObject(KitchenObject kitchenObject)
-    {
-        this.kitchenObject = kitchenObject;
-        if (kitchenObject != null)
-        {
-            OnPickUpSomething?.Invoke(this, EventArgs.Empty);
-        }
-    }
+		if (canMove)
+		{
+			transform.position += moveDir * Time.deltaTime * moveSpeed;
+		}
+		isWalking = (inputVector != Vector2.zero);
+		float rotateSpeed = 10f;
+		transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+	}
 
-    public KitchenObject GetKitchenObject()
-    {
-        return kitchenObject;
-    }
+	private void SetSelectedCounter(BaseCounter selectedCounter)
+	{
+		this.selectedCounter = selectedCounter;
 
-    public void ClearKitchenObject()
-    {
-        kitchenObject = null;
-    }
+		OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
+		{
+			selectedCounter = selectedCounter
+		});
+	}
+	public Transform GetKitchenObjectFollowTransform()
+	{
+		return kitchenObjectHoldPoint;
+	}
 
-    public bool HasKitchenObject()
-    {
-        return kitchenObject != null;
-    }
+	public void SetKitchenObject(KitchenObject kitchenObject)
+	{
+		this.kitchenObject = kitchenObject;
+		if (kitchenObject != null)
+		{
+			OnPickUpSomething?.Invoke(this, EventArgs.Empty);
+		}
+	}
+
+	public KitchenObject GetKitchenObject()
+	{
+		return kitchenObject;
+	}
+
+	public void ClearKitchenObject()
+	{
+		kitchenObject = null;
+	}
+
+	public bool HasKitchenObject()
+	{
+		return kitchenObject != null;
+	}
 
 }
-
-

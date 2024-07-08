@@ -159,8 +159,89 @@ public class StoveCounter : BaseCounter, IHasProgress{
                 });
             }
         }
+        
     }
-    
+    public override void Interact2(Player2 player2)
+    {
+        
+       
+        if (!HasKitchenObject())
+        {
+            // 柜子上没有物品
+            if (player2.HasKitchenObject())
+            {
+                // 角色有物品，放置物品
+                if (HasRecipeWithInput(player2.GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    // 角色拿着的物品可以被煎
+                    player2.GetKitchenObject().SetKitchenObjectParent(this);
+                    fryingRecipeSO = GetFryingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+                    state = State.Frying;
+                    fryingTimer = 0f;
+
+                    OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
+                    {
+                        state = state
+                    });
+
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
+                        progressNormalized = fryingTimer / fryingRecipeSO.fryingTimerMax
+                    });
+
+                }
+            }
+            else
+            {
+                // 角色没有物品
+            }
+        }
+        else
+        {
+            // 柜子上有物品
+            if (player2.HasKitchenObject())
+            {
+                // 角色有物品
+                if (player2.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    // 角色拿的是盘子
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObject().DestroySelf();
+
+                        state = State.Idle;
+
+                        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
+                        {
+                            state = state
+                        });
+
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                        {
+                            progressNormalized = 0f
+                        });
+                    }
+                }
+            }
+            else
+            {
+                // 角色没有物品，拾取物品
+                GetKitchenObject().SetKitchenObjectParent(player2);
+                state = State.Idle;
+
+                OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
+                {
+                    state = state
+                });
+
+                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                {
+                    progressNormalized = 0f
+                });
+            }
+        }
+    }
+
     private bool HasRecipeWithInput(KitchenObjectSO inputKitchenObjectSO){
         FryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObjectSO);
         return fryingRecipeSO != null;

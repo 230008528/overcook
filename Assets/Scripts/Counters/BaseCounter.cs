@@ -19,7 +19,16 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent{
     public virtual void Interact(Player player){
         Debug.Log("BaseCounter.Interact()");
     }
-    public virtual void InteractAlternate(Player player){
+    public virtual void Interact2(Player2 player)
+    {
+        Debug.Log("BaseCounter.Interact()");
+    }
+    public virtual void InteractAlternate(Player player)
+    {
+        Debug.LogError("BaseCounter.InteractAlternate()"); // 不是所有的柜台都有这个交互，所以不应该输出Error信息，一开始作者是输出的，但是在后面改了
+    }
+    public virtual void InteractAlternate2(Player2 player2)
+    {
         Debug.LogError("BaseCounter.InteractAlternate()"); // 不是所有的柜台都有这个交互，所以不应该输出Error信息，一开始作者是输出的，但是在后面改了
     }
 

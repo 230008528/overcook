@@ -7,8 +7,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
 
 	
 	public static Player Instance{ get; private set ;}
+	
 
-    private PlayerInput playerInput;//get input system
+	private PlayerInputActions playerInput;//get input system
 
 
     public event EventHandler OnPickUpSomething;
@@ -34,7 +35,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent{
         }
 		Instance = this;
 
-        playerInput = new PlayerInput();//get input system
+        playerInput = new PlayerInputActions();//get input system
         playerInput.Player.Enable();//get input map
     }
 	private void Start(){
