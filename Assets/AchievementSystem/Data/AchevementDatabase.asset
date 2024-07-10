@@ -16,10 +16,13 @@ MonoBehaviour:
     array:
     - id: achT01
       title: A Green Chef
-      description: Complete the teaching phase
+      description: Get into the Game
     - id: achG02
       title: Over Cooked
       description: 
     - id: achG03
       title: 3s Rules
       description: 
+    - id: achG1
+      title: No Touching!
+      description: I can see you
