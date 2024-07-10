@@ -903,7 +903,7 @@ MonoBehaviour:
   options: {fileID: 1897016814}
   cSMe: {fileID: 1311009350}
   cSMeChar: {fileID: 310562990}
-  youFMe: {fileID: 0}
+  youFMe: {fileID: 87076648}
 --- !u!1 &617147270
 GameObject:
   m_ObjectHideFlags: 0
